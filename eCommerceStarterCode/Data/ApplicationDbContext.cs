@@ -13,6 +13,9 @@ namespace eCommerceStarterCode.Data
 
         }
 
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set;}
+        public DbSet<Review> Reviews { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
