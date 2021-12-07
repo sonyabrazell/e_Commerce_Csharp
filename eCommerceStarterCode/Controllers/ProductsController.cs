@@ -1,7 +1,9 @@
 ﻿using eCommerceStarterCode.Data;
+using eCommerceStarterCode.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -30,14 +32,17 @@ namespace eCommerceStarterCode.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var oneProduct = _context.Products.Include(p => p.Seller).Include(p => p.Reviews).Where(p => p.Id == id);
+            var oneProduct = _context.Products.Include(p => p.Seller).Where(p => p.Id == id);
             return Ok(oneProduct);
         }
 
         // POST api/<ProductsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody]Product value)
         {
+            _context.Add(value);
+            _context.SaveChanges();
+            return StatusCode(201, value);
         }
 
         // PUT api/<ProductsController>/5

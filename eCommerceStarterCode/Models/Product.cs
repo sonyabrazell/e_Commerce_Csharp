@@ -16,10 +16,5 @@ namespace eCommerceStarterCode.Models
         [ForeignKey("Seller")]
         public string UserId { get; set; }
         public User Seller { get; set; }
-
-        [ForeignKey("Reviews")]
-        public int ReviewId { get; set; }
-        public Review Reviews { get; set; }
-
     }
 }

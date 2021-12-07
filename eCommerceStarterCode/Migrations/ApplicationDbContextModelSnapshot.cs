@@ -188,15 +188,10 @@ namespace eCommerceStarterCode.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReviewId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReviewId");
 
                     b.HasIndex("UserId");
 
@@ -372,17 +367,9 @@ namespace eCommerceStarterCode.Migrations
 
             modelBuilder.Entity("eCommerceStarterCode.Models.Product", b =>
                 {
-                    b.HasOne("eCommerceStarterCode.Models.Review", "Reviews")
-                        .WithMany()
-                        .HasForeignKey("ReviewId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("eCommerceStarterCode.Models.User", "Seller")
                         .WithMany()
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Reviews");
 
                     b.Navigation("Seller");
                 });
