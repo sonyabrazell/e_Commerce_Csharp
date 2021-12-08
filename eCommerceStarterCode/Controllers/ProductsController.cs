@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Linq;
+using eCommerceStarterCode.Controllers;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,7 +39,7 @@ namespace eCommerceStarterCode.Controllers
         }
 
         // POST api/<ProductsController>
-        [HttpPost]
+        [HttpPost, Authorize]
         public IActionResult Post([FromBody]Product value)
         {
             _context.Add(value);

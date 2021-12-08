@@ -1,7 +1,10 @@
 ﻿using eCommerceStarterCode.Data;
+using eCommerceStarterCode.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,25 +20,21 @@ namespace eCommerceStarterCode.Controllers
             _context = context;
         }
 
-        // GET: api/<ShoppingCartController>
-        [HttpGet("{UserId}/{id}")]
-        public IActionResult Get()
+        // GET: api/<ShoppingCartController>/b8761e98-e02e-4f34-ad8f-fd2dcc25af5b
+        [HttpGet("{Userid}"), Authorize]
+        public IActionResult Get(string UserId)
         {
-            var shoppingCart = _context.ShoppingCarts.Include(sc => sc.Customer).Include(sc => sc.Product).Where(sc => sc.UserId == "{UserId}");
+            var shoppingCart = _context.ShoppingCarts.Include(sc => sc.Customer).Include(sc => sc.Product).Where(sc => sc.UserId == UserId).ToList();
             return Ok(shoppingCart);
         }
 
-        // GET api/<ShoppingCartController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/<ShoppingCartController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost, Authorize]
+        public IActionResult Post([FromBody] ShoppingCart value)
         {
+            _context.Add(value);
+            _context.SaveChanges();
+            return StatusCode(201, value);
         }
 
         // PUT api/<ShoppingCartController>/5
@@ -45,9 +44,13 @@ namespace eCommerceStarterCode.Controllers
         }
 
         // DELETE api/<ShoppingCartController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{id}"), Authorize]
+        public IActionResult Delete(int id, [FromBody] string userId)
         {
+            var shoppingCart = _context.ShoppingCarts.Include(sc => sc.Customer).Include(sc => sc.Product).Where(sc => sc.ProductId == id).Where(sc => sc.UserId == userId).FirstOrDefault();
+            _context.Remove(shoppingCart);
+            _context.SaveChanges();
+            return StatusCode(201, shoppingCart);
         }
     }
 }
