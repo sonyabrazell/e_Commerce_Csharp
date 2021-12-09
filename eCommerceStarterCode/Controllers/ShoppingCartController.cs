@@ -45,12 +45,12 @@ namespace eCommerceStarterCode.Controllers
 
         // DELETE api/<ShoppingCartController>/5
         [HttpDelete("{id}"), Authorize]
-        public IActionResult Delete(int id, [FromBody] string userId)
+        public IActionResult Delete(int id)
         {
-            var shoppingCart = _context.ShoppingCarts.Include(sc => sc.Customer).Include(sc => sc.Product).Where(sc => sc.ProductId == id).Where(sc => sc.UserId == userId).FirstOrDefault();
+            var shoppingCart = _context.ShoppingCarts.Where(sc => sc.Id == id).SingleOrDefault();
             _context.Remove(shoppingCart);
             _context.SaveChanges();
-            return StatusCode(201, shoppingCart);
+            return StatusCode(200, shoppingCart);
         }
     }
 }
